@@ -11,6 +11,7 @@ function navAllStories(evt) {
   evt.preventDefault();
   hidePageComponents();
   putStoriesOnPage();
+
 }
 
 $body.on("click", "#nav-all", navAllStories);
@@ -36,3 +37,15 @@ function updateNavOnLogin() {
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
+
+$('#nav-submit').on('click', showSubmitForm);
+
+
+/** When a user clicks on submit link, submit new story form appears*/
+
+function showSubmitForm() {
+
+  $("#submit-form").show();
+
+}
+

@@ -50,3 +50,25 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+$("#submit-form").on('click', 'button', submitNewStory);
+
+/** Getting information from submit form and using values to create new story on the page */
+async function submitNewStory(evt) {
+  evt.preventDefault();
+
+  const author = $("#form-author").val();
+  const title = $("#form-title").val();
+  const url = $("#form-url").val();
+
+  const newStory = await storyList.addStory(currentUser, {
+    author,
+    title,
+    url
+  });
+  console.log(newStory);
+  const newStoryMarkup = generateStoryMarkup(newStory);
+  $allStoriesList.prepend(newStoryMarkup);
+  $('#submit-form').hide();
+
+}
