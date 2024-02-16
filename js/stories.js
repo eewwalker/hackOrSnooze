@@ -88,9 +88,12 @@ async function updateFavorites(evt) {
 
   if(checkforStoryInFavorites(story)) {
     currentUser.removeFavorite(story);
+    $icon.attr("class", "bi bi-star");
   } else {
     currentUser.addFavorite(story);
+    $icon.attr("class", "bi bi-star-fill");
   }
+
 
   console.log(currentUser.favorites);
 }
