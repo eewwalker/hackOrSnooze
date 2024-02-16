@@ -20,9 +20,11 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
+
   const inFavorites = checkForStoryInFavorites(story);
   const starStyle = inFavorites ? 'bi-star-fill' : 'bi-star';
   const hostName = story.getHostName();
+  
   return $(`
       <li id="${story.storyId}">
         <span class="star">
@@ -76,31 +78,58 @@ async function submitNewStory(evt) {
 
 }
 
-$allStoriesList.on("click", ".star", updateFavorites);
 
+$('.stories-container').on("click", ".star", updateFavorites);
+
+/** When user clicks on star icon, story is either removed or added to favorites
+ * and updates star icon to reflect that
+ */
 async function updateFavorites(evt) {
+
   const $icon = $(evt.target);
   const storyId = $icon
     .closest("li")
     .attr("id");
+
   const story = await Story.getStory(storyId);
+
+  updateStarIcon(story, $icon);
 
   if (checkForStoryInFavorites(story)) {
     currentUser.removeFavorite(story);
-    $icon.attr("class", "bi bi-star");
+
   } else {
     currentUser.addFavorite(story);
-    $icon.attr("class", "bi bi-star-fill");
   }
 
 
 }
 
+/** Checks if the story id matches any story id in users favorite list;
+ * returns Boolean
+ */
+
 function checkForStoryInFavorites(story) {
+
   for (let favoriteStory of currentUser.favorites) {
     if (story.storyId === favoriteStory.storyId) {
+
       return true;
     }
   }
+
   return false;
+}
+
+/** Updates star icon to reflect if story is favorite or not  */
+function updateStarIcon(story, $icon) {
+
+  if (checkForStoryInFavorites(story)) {
+
+    $icon.attr("class", "bi bi-star");
+  } else {
+
+    $icon.attr("class", "bi bi-star-fill");
+  }
+
 }

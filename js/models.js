@@ -28,10 +28,14 @@ class Story {
     return urlObj.hostname;
   }
 
+  /** Takes a story a story id and returns instance of that story object */
   static async getStory(id) {
+
     const response = await fetch(`${BASE_URL}/stories/${id}`);
     const storyObj = await response.json();
+
     return new Story(storyObj.story);
+
   }
 }
 
@@ -224,7 +228,9 @@ class User {
       return null;
     }
   }
-
+  /** Takes in story instance and adds to users favorites list and updates
+   * server data
+   */
   async addFavorite(story) {
     const response = await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`, {
       method: "POST",
@@ -237,9 +243,12 @@ class User {
     });
     const favoriteResponse = await response.json();
 
-    this.favorites.unshift(story);
+    this.favorites.push(story);
   };
 
+  /** Takes in story instance and removes from users favorites list and
+   * updates server data
+   */
   async removeFavorite(story) {
     const response = await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`, {
       method: "DELETE",
@@ -252,7 +261,9 @@ class User {
     });
 
     let removeIdx = -1;
+
     for (let i = 0; i < currentUser.favorites.length; i++) {
+
       if (story.storyId === currentUser.favorites[i].storyId) {
         removeIdx = i;
       }

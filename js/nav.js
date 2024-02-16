@@ -55,13 +55,17 @@ $('#nav-favorites').on('click', showFavoritesList);
 /** When a user clicks on favorites link a list of favorite stories loads */
 
 function showFavoritesList() {
-  const favorites = currentUser.favorites;
 
+  const favorites = currentUser.favorites;
+  $favoriteStoriesList.empty();
   // loop through all of our stories and generate HTML for them
+
   for (let story of favorites) {
     const $story = generateStoryMarkup(story);
-    $favoriteStoriesList.append($story);
+    $favoriteStoriesList.prepend($story);
+
   }
+
   $allStoriesList.hide();
   $favoriteStoriesList.show();
 }
