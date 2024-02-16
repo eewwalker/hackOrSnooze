@@ -19,20 +19,14 @@ async function getAndShowStoriesOnStart() {
  * Returns the markup for the story.
  */
 
-function generateStoryMarkup(story) {   //could decompose function
+function generateStoryMarkup(story) {
 
   const hostName = story.getHostName();
+  const starMarkup = generateStarMarkup(story);
 
-  if (currentUser) {
-    const inFavorites = checkForStoryInFavorites(story);
-    const starStyle = inFavorites ? 'bi-star-fill' : 'bi-star';
-
-    return $(`
+  return $(`
         <li id="${story.storyId}">
-          <span class="star">
-            <i class="bi ${starStyle}">
-            </i>
-          </span>
+            ${starMarkup}
           <a href="${story.url}" target="a_blank" class="story-link">
             ${story.title}
           </a>
@@ -42,20 +36,22 @@ function generateStoryMarkup(story) {   //could decompose function
         </li>
       `);
 
+
+}
+
+/** Generates star icon if user is logged in  */
+function generateStarMarkup(story) {
+  if (currentUser) {
+    const inFavorites = checkForStoryInFavorites(story);
+    const starStyle = inFavorites ? 'bi-star-fill' : 'bi-star';
+
+    return `<span class="star">
+          <i class="bi ${starStyle}">
+          </i>
+        </span>`;
   } else {
-    return $(`
-        <li id="${story.storyId}">
-          <a href="${story.url}" target="a_blank" class="story-link">
-           ${story.title}
-          </a>
-          <small class="story-hostname">(${hostName})</small>
-          <small class="story-author">by ${story.author}</small>
-          <small class="story-user">posted by ${story.username}</small>
-        </li>
-      `);
-
+    return '';
   }
-
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
@@ -140,13 +136,7 @@ function checkForStoryInFavorites(story) {
 
 /** Updates star icon to reflect if story is favorite or not  */
 function updateStarIcon(story, $icon) {
-
-  if (checkForStoryInFavorites(story)) {  //TODO: .hasClass instead
-
-    $icon.attr("class", "bi bi-star");
-  } else {
-
-    $icon.attr("class", "bi bi-star-fill");
-  }
+  $icon.hasClass('bi-star-fill') ?
+    $icon.attr("class", "bi bi-star") : $icon.attr("class", "bi bi-star-fill");
 
 }

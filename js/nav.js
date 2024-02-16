@@ -73,3 +73,12 @@ function showFavoritesList() {
   $allStoriesList.hide();
   $favoriteStoriesList.show();
 }
+
+$('#nav-my-stories').on('click', showMyStories);
+
+/**When a user clicks on my stories link a list of stories created by logged
+ * in user loads
+ */
+function showMyStories() {
+
+}

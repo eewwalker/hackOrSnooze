@@ -232,15 +232,7 @@ class User {
    * server data
    */
   async addFavorite(story) {
-    const response = await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`, {
-      method: "POST",
-      body: JSON.stringify({
-        "token": currentUser.loginToken,
-      }),
-      headers: {
-        "content-type": "application/json",
-      }
-    });
+    const response = await this._handleFavoriteApiCall(story, "POST");
     const favoriteResponse = await response.json();
 
     this.favorites.push(story);
@@ -250,8 +242,21 @@ class User {
    * updates server data
    */
   async removeFavorite(story) {
-    const response = await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`, { //TODO: Add helper function
-      method: "DELETE",
+    const response = await this._handleFavoriteApiCall(story, "DELETE");
+
+
+    currentUser.favorites = currentUser.favorites.filter(fav => {
+      return fav.storyId !== story.storyId;
+    });
+
+  }
+
+  /** Helper function takes story and method makes API call to either
+   * add or delete story from users favorite list
+   */
+  async _handleFavoriteApiCall(story, method) {
+    return await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`, {
+      method,
       body: JSON.stringify({
         "token": currentUser.loginToken,
       }),
@@ -259,18 +264,8 @@ class User {
         "content-type": "application/json",
       }
     });
-
-    let removeIdx = -1;
-
-    for (let i = 0; i < currentUser.favorites.length; i++) {
-
-      if (story.storyId === currentUser.favorites[i].storyId) { // TODO: Convert to filter
-        removeIdx = i;
-      }
-    }
+  };
 
 
-    this.favorites.splice(removeIdx, 1);
 
-  }
 }
