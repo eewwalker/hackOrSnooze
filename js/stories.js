@@ -25,6 +25,10 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+        <span class="star">
+          <i class="bi bi-star">
+          </i>
+        </span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -71,4 +75,31 @@ async function submitNewStory(evt) {
   $allStoriesList.prepend(newStoryMarkup);
   $('#submit-form').hide();
 
+}
+
+$allStoriesList.on("click", ".star", updateFavorites);
+
+async function updateFavorites(evt) {
+  const $icon = $(evt.target);
+  const storyId = $icon
+    .closest("li")
+    .attr("id");
+  const story = await Story.getStory(storyId);
+
+  if(checkforStoryInFavorites(story)) {
+    currentUser.removeFavorite(story);
+  } else {
+    currentUser.addFavorite(story);
+  }
+
+  console.log(currentUser.favorites);
+}
+
+function checkforStoryInFavorites(story) {
+  for(let favoriteStory of currentUser.favorites) {
+    if(story.storyId === favoriteStory.storyId) {
+      return true;
+    }
+  }
+  return false;
 }

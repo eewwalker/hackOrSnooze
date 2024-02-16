@@ -24,8 +24,14 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // FIXME: complete this function!
-    return "hostname.com";
+    const urlObj = new URL(this.url);
+    return urlObj.hostname;
+  }
+
+  static async getStory(id) {
+    const response = await fetch(`${BASE_URL}/stories/${id}`);
+    const storyObj = await response.json();
+    return new Story(storyObj.story);
   }
 }
 
@@ -217,5 +223,36 @@ class User {
       console.error("loginViaStoredCredentials failed", err);
       return null;
     }
+  }
+
+  async addFavorite(story) {
+    const response = await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`, {
+      method: "POST",
+      body: JSON.stringify({
+        "token": currentUser.loginToken,
+      }),
+      headers: {
+        "content-type": "application/json",
+      }
+    });
+    const favoriteResponse = await response.json();
+
+    this.favorites.unshift(story);
+  };
+
+  async removeFavorite(story) {
+    const response = await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`, {
+      method: "DELETE",
+      body: JSON.stringify({
+        "token": currentUser.loginToken,
+      }),
+      headers: {
+        "content-type": "application/json",
+      }
+    });
+
+    const removeIdx = this.favorites.indexOf(story);
+    this.favorites.splice(removeIdx, 1);
+
   }
 }
