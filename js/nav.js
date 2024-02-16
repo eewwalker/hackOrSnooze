@@ -56,4 +56,12 @@ $('#nav-favorites').on('click', showFavoritesList);
 
 function showFavoritesList() {
   const favorites = currentUser.favorites;
+
+  // loop through all of our stories and generate HTML for them
+  for (let story of favorites) {
+    const $story = generateStoryMarkup(story);
+    $favoriteStoriesList.append($story);
+  }
+  $allStoriesList.hide();
+  $favoriteStoriesList.show();
 }
