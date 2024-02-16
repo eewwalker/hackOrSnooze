@@ -35,6 +35,7 @@ function updateNavOnLogin() {
   $(".main-nav-links").show();
   $navLogin.hide();
   $navLogOut.show();
+  $(".nav-left").show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
@@ -43,7 +44,9 @@ $('#nav-submit').on('click', showSubmitForm);
 
 /** When a user clicks on submit link, submit new story form appears*/
 
-function showSubmitForm() {
+function showSubmitForm(evt) {
+
+  navAllStories(evt);
 
   $("#submit-form").show();
 
@@ -66,6 +69,7 @@ function showFavoritesList() {
 
   }
 
+  $submitForm.hide();
   $allStoriesList.hide();
   $favoriteStoriesList.show();
 }

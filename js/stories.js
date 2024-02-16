@@ -19,26 +19,43 @@ async function getAndShowStoriesOnStart() {
  * Returns the markup for the story.
  */
 
-function generateStoryMarkup(story) {
+function generateStoryMarkup(story) {   //could decompose function
 
-  const inFavorites = checkForStoryInFavorites(story);
-  const starStyle = inFavorites ? 'bi-star-fill' : 'bi-star';
   const hostName = story.getHostName();
-  
-  return $(`
-      <li id="${story.storyId}">
-        <span class="star">
-          <i class="bi ${starStyle}">
-          </i>
-        </span>
-        <a href="${story.url}" target="a_blank" class="story-link">
-          ${story.title}
-        </a>
-        <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
-      </li>
-    `);
+
+  if (currentUser) {
+    const inFavorites = checkForStoryInFavorites(story);
+    const starStyle = inFavorites ? 'bi-star-fill' : 'bi-star';
+
+    return $(`
+        <li id="${story.storyId}">
+          <span class="star">
+            <i class="bi ${starStyle}">
+            </i>
+          </span>
+          <a href="${story.url}" target="a_blank" class="story-link">
+            ${story.title}
+          </a>
+          <small class="story-hostname">(${hostName})</small>
+          <small class="story-author">by ${story.author}</small>
+          <small class="story-user">posted by ${story.username}</small>
+        </li>
+      `);
+
+  } else {
+    return $(`
+        <li id="${story.storyId}">
+          <a href="${story.url}" target="a_blank" class="story-link">
+           ${story.title}
+          </a>
+          <small class="story-hostname">(${hostName})</small>
+          <small class="story-author">by ${story.author}</small>
+          <small class="story-user">posted by ${story.username}</small>
+        </li>
+      `);
+
+  }
+
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
@@ -124,7 +141,7 @@ function checkForStoryInFavorites(story) {
 /** Updates star icon to reflect if story is favorite or not  */
 function updateStarIcon(story, $icon) {
 
-  if (checkForStoryInFavorites(story)) {
+  if (checkForStoryInFavorites(story)) {  //TODO: .hasClass instead
 
     $icon.attr("class", "bi bi-star");
   } else {

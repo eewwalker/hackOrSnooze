@@ -41,3 +41,8 @@
 .star:hover {
   cursor: pointer;
 }
+
+#favorite-stories-list {
+  list-style: none;
+  padding-left: 20px;
+}

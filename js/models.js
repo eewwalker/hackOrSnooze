@@ -250,7 +250,7 @@ class User {
    * updates server data
    */
   async removeFavorite(story) {
-    const response = await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`, {
+    const response = await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`, { //TODO: Add helper function
       method: "DELETE",
       body: JSON.stringify({
         "token": currentUser.loginToken,
@@ -264,7 +264,7 @@ class User {
 
     for (let i = 0; i < currentUser.favorites.length; i++) {
 
-      if (story.storyId === currentUser.favorites[i].storyId) {
+      if (story.storyId === currentUser.favorites[i].storyId) { // TODO: Convert to filter
         removeIdx = i;
       }
     }
