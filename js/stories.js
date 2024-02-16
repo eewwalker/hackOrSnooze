@@ -20,13 +20,13 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
-
+  const inFavorites = checkForStoryInFavorites(story);
+  const starStyle = inFavorites ? 'bi-star-fill' : 'bi-star';
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
         <span class="star">
-          <i class="bi bi-star">
+          <i class="bi ${starStyle}">
           </i>
         </span>
         <a href="${story.url}" target="a_blank" class="story-link">
@@ -70,7 +70,6 @@ async function submitNewStory(evt) {
     title,
     url
   });
-  console.log(newStory);
   const newStoryMarkup = generateStoryMarkup(newStory);
   $allStoriesList.prepend(newStoryMarkup);
   $('#submit-form').hide();
@@ -86,7 +85,7 @@ async function updateFavorites(evt) {
     .attr("id");
   const story = await Story.getStory(storyId);
 
-  if(checkforStoryInFavorites(story)) {
+  if (checkForStoryInFavorites(story)) {
     currentUser.removeFavorite(story);
     $icon.attr("class", "bi bi-star");
   } else {
@@ -95,12 +94,11 @@ async function updateFavorites(evt) {
   }
 
 
-  console.log(currentUser.favorites);
 }
 
-function checkforStoryInFavorites(story) {
-  for(let favoriteStory of currentUser.favorites) {
-    if(story.storyId === favoriteStory.storyId) {
+function checkForStoryInFavorites(story) {
+  for (let favoriteStory of currentUser.favorites) {
+    if (story.storyId === favoriteStory.storyId) {
       return true;
     }
   }

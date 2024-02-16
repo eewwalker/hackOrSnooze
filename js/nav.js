@@ -49,3 +49,11 @@ function showSubmitForm() {
 
 }
 
+
+$('#nav-favorites').on('click', showFavoritesList);
+
+/** When a user clicks on favorites link a list of favorite stories loads */
+
+function showFavoritesList() {
+  const favorites = currentUser.favorites;
+}

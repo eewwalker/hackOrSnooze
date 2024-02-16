@@ -252,15 +252,14 @@ class User {
     });
 
     let removeIdx = -1;
-    for(let i = 0; i < currentUser.favorites.length; i++) {
-      if(story.storyId === currentUser.favorites[i].storyId) {
+    for (let i = 0; i < currentUser.favorites.length; i++) {
+      if (story.storyId === currentUser.favorites[i].storyId) {
         removeIdx = i;
       }
     }
 
 
     this.favorites.splice(removeIdx, 1);
-    console.log("index:", removeIdx, "story:", story, "favorites:", this.favorites);
 
   }
 }
