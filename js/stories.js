@@ -23,9 +23,11 @@ function generateStoryMarkup(story) {
 
   const hostName = story.getHostName();
   const starMarkup = generateStarMarkup(story);
+  const trashMarkup = generateTrashMarkup();
 
   return $(`
         <li id="${story.storyId}">
+            ${trashMarkup}
             ${starMarkup}
           <a href="${story.url}" target="a_blank" class="story-link">
             ${story.title}
@@ -36,6 +38,18 @@ function generateStoryMarkup(story) {
         </li>
       `);
 
+
+}
+
+function generateTrashMarkup() {
+  if (!$userStoriesList.is(':hidden')) {
+    return `<span class="trash-can">
+          <i class="bi bi-trash ">
+          </i>
+        </span>`;
+  } else {
+    return '';
+  }
 
 }
 

@@ -58,13 +58,15 @@ $('#nav-favorites').on('click', showFavoritesList);
 /** When a user clicks on favorites link a list of favorite stories loads */
 
 function showFavoritesList() {
-
+  hidePageComponents();
+  $favoriteStoriesList.show();
+  
   const favorites = currentUser.favorites;
   $favoriteStoriesList.empty();
   // loop through all of our stories and generate HTML for them
 
-  if(favorites.length === 0) {
-    $favoriteStoriesList.append(displayEmptyMessage('favorites added'))
+  if (favorites.length === 0) {
+    $favoriteStoriesList.append(displayEmptyMessage('favorites added'));
   }
 
   for (let story of favorites) {
@@ -73,8 +75,7 @@ function showFavoritesList() {
 
   }
 
-  hidePageComponents();
-  $favoriteStoriesList.show();
+
 }
 
 $('#nav-my-stories').on('click', showMyStories);
@@ -83,6 +84,8 @@ $('#nav-my-stories').on('click', showMyStories);
  * in user loads
  */
 function showMyStories() {
+  hidePageComponents();
+  $userStoriesList.show();
 
   const stories = storyList.stories;
   $userStoriesList.empty();
@@ -91,19 +94,19 @@ function showMyStories() {
     return story.username === currentUser.username;
   });
 
-  if(userStories.length === 0) {
-    $userStoriesList.append(displayEmptyMessage('stories created'))
+  if (userStories.length === 0) {
+    $userStoriesList.append(displayEmptyMessage('stories created'));
   }
 
   userStories.map(story => {
     const $story = generateStoryMarkup(story);
     $userStoriesList.prepend($story);
-  })
+  });
 
-  hidePageComponents();
-  $userStoriesList.show();
+
+
 }
 
 function displayEmptyMessage(message) {
-  return $(`<h5>Sorry, no ${message}!</h5>`)
+  return $(`<h5>Sorry, no ${message}!</h5>`);
 }

@@ -38,8 +38,11 @@
   display: block;
 }
 
-.star:hover {
+.star:hover, .trash-can:hover {
   cursor: pointer;
+}
+.trash-can:hover {
+color: red;
 }
 
 #favorite-stories-list,
