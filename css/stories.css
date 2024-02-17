@@ -42,7 +42,8 @@
   cursor: pointer;
 }
 
-#favorite-stories-list {
+#favorite-stories-list,
+#user-stories-list {
   list-style: none;
   padding-left: 20px;
 }

@@ -63,14 +63,17 @@ function showFavoritesList() {
   $favoriteStoriesList.empty();
   // loop through all of our stories and generate HTML for them
 
+  if(favorites.length === 0) {
+    $favoriteStoriesList.append(displayEmptyMessage('favorites added'))
+  }
+
   for (let story of favorites) {
     const $story = generateStoryMarkup(story);
     $favoriteStoriesList.prepend($story);
 
   }
 
-  $submitForm.hide();
-  $allStoriesList.hide();
+  hidePageComponents();
   $favoriteStoriesList.show();
 }
 
@@ -81,4 +84,26 @@ $('#nav-my-stories').on('click', showMyStories);
  */
 function showMyStories() {
 
+  const stories = storyList.stories;
+  $userStoriesList.empty();
+
+  const userStories = stories.filter(story => {
+    return story.username === currentUser.username;
+  });
+
+  if(userStories.length === 0) {
+    $userStoriesList.append(displayEmptyMessage('stories created'))
+  }
+
+  userStories.map(story => {
+    const $story = generateStoryMarkup(story);
+    $userStoriesList.prepend($story);
+  })
+
+  hidePageComponents();
+  $userStoriesList.show();
+}
+
+function displayEmptyMessage(message) {
+  return $(`<h5>Sorry, no ${message}!</h5>`)
 }
